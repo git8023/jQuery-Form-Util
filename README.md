@@ -9,11 +9,10 @@
     * 原型扩展:`prototype.js`
     * 字符串工具:`StringUtil.js`
     * 表单工具:`Form.js`
-    * 
 # 如何使用
   表单容器不强制性依赖`\<form>`控件, 表单容器可以是任意控件元素.\<br>
   但应确保表单容器中包含合法(name属性值)的表单项控件, 如: `<input>`,`<select>`,`<textarea>`.\<br>
-  * 获取表单对象
+  * 获取表单对象\<>
     ```Javascript
     var formContainerSelector = 'div#form-container form:eq(0)';
     // 表单容器选择器除了可以直接指向form控件之外, 也可以使用其父容器.
