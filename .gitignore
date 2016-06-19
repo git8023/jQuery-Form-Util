@@ -1,0 +1,10 @@
+*.classpath
+formUtil/.project
+formUtil/.settings/.jsdtscope
+*.prefs
+*.component
+formUtil/.settings/org.eclipse.wst.common.project.facet.core.xml
+*.container
+formUtil/.settings/org.eclipse.wst.jsdt.ui.superType.name
+*.class
+*.MF

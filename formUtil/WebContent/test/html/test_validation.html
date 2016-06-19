@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Validate Test</title>
+
+<script type="text/javascript" src="../../js/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="../../js/prototype.js"></script>
+<script type="text/javascript" src="../../js/StringUtil.js"></script>
+<script type="text/javascript" src="../../js/Form.js"></script>
+
+<style type="text/css">
+td {
+    padding: 5px;
+}
+
+#show {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    min-width: 300px;
+    min-height: 300px;
+    max-width: 500px;
+    border: 1px solid #F00;
+    word-wrap: break-word;
+    word-break: break-all;
+    padding: 10px;
+}
+
+.ipt_err {
+    border:1px solid #F00;
+}
+</style>
+</head>
+<body>
+
+    <div id="form_container">
+        <h1>Verification Test</h1>
+
+        <form action="#" onsubmit="return false">
+            <p>　用户名：
+                <input type="text" name="account" 
+                    regexp="/^[a-zA-Z][a-zA-Z0-9_-]{7,16}$/" 
+                    regexp-error="用户名支持字母、数字、下划线、中划线, 只能以字母开头. 且长度在8~16之间" 
+                    
+                    remote-url="user/existAccount"
+                    remote-error="已存在的用户名, 请更换."
+                    />
+                <span></span>
+            </p>
+            <p>　密　码：
+                <input type="password" name="pwd"
+                    invalid_sufix_regexp="/^.{8,20}$/" 
+                    invalid_sufix_regexp-error="密码长度在8~20之间"
+                    
+                    invalid_sufix_not-eq-to="[name='account']" 
+                    invalid_sufix_not-eq-to-error="密码不能与账户相同" 
+                    />
+                <span></span>
+            </p>
+            <p>重复密码：
+                <input type="password" name="repwd" 
+                    invalid_sufix_eq-to="[name='pwd']" 
+                    invalid_sufix_eq-to-error="两次密码输入不一致" 
+                    />
+                <span></span>
+            </p>
+            <p>　描　述：
+                <textarea name="desc" cols="30" rows="10"
+                    invalid_sufix_regexp="/^.+$/"
+                    invalid_sufix_regexp-error="描述不能为空"
+                    ></textarea>
+                <span></span>
+            </p>
+            <p><button id="btnSubmit">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;<button id="btnRegisterEvents">Register Events</button></p>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        $(function() {
+            var form = new Form($("#form_container"), true);
+            $("#btnRegisterEvents").click(function(){
+                form.registerEvents({
+                    validSuccess: function(item, val) {
+                        item.removeClass("ipt_err");
+                        item.parent().find("span").html("");
+                    },
+                    validFailed: function(item, value, errMsg) {
+                        item.addClass("ipt_err");
+                        item.parent().find("span").html(errMsg);
+                    },
+                    validCompleted: function(){
+                        console.log("success:" + arguments);
+                    }
+                });
+                console.log(form.config.events);
+            });
+            
+            $("#btnSubmit").click(function(){
+                var valid = form.validate({
+                    // validAll : true
+                    validAll : false
+                });
+                
+                valid && console && console.log("Verification : " + valid);
+            });
+        });
+    </script>
+</body>
+</html>

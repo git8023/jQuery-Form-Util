@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Get Form Data Test</title>
+    
+    <script type="text/javascript" src="../../src/js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="../../src/js/prototype.js"></script>
+    <script type="text/javascript" src="../../src/js/Form.js"></script>
+    
+    <style type="text/css">
+        td {padding:10px;}
+        #show {
+            position:fixed; 
+            right:10px; 
+            top:10px; 
+            min-width:300px; 
+            min-height:300px; 
+            max-width:500px; 
+            border:1px solid #F00; 
+            word-wrap:break-word; 
+            word-break:break-all;
+            padding:10px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="form_container">
+        <h1>Testing Get Form Data</h1>
+    
+        <form action="#" onsubmit="return false">
+            <table border="1">
+                <tr>
+                    <td>Input Hidden</td>
+                    <td><input type="hidden" name="hidden" value="hidden" /></td>
+                </tr>
+                
+                <tr>
+                    <td>Input Text</td>
+                    <td><input type="text" name="text" /></td>
+                </tr>
+                
+                <tr>
+                    <td>Input Password</td>
+                    <td><input type="password" name="password" /></td>
+                </tr>
+                
+                <tr>
+                    <td>Input Radio</td>
+                    <td>
+                       <input id="radio1" type="radio" name="radio" value="Radio1" /><label for="radio1">Radio1</label>
+                       <input id="radio2" type="radio" name="radio" value="Radio2" /><label for="radio2">Radio2</label>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>Input Checkbox</td>
+                    <td>
+                       <input id="checkbox1" type="checkbox" name="checkbox" value="checkbox1" /><label for="checkbox1">Checkbox 1</label>
+                       <input id="checkbox2" type="checkbox" name="checkbox" value="checkbox2" /><label for="checkbox2">Checkbox 2</label>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>Single Value</td>
+                    <td>
+                        <select name="singleSelece">
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                            <option value="4">Option 4</option>
+                            <option value="5">Option 5</option>
+                        </select>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>Multi Value</td>
+                    <td>
+                        <select name="multiSelect" multiple="multiple">
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                            <option value="4">Option 4</option>
+                            <option value="5">Option 5</option>
+                        </select>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>Textarea</td>
+                    <td><textarea name="textarea" id="" cols="30" rows="10"></textarea></td>
+                </tr>
+                
+                <tr>
+                    <td><button id="btnSubmitForm">Get Data By Form</button></td>
+                    <td><button id="btnSubmitDiv">Get Data By Div</button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    
+    <div id="show" title="Double Click For Clean Content">Double Click For Clean Content</div>
+    
+    <script type="text/javascript">
+        $(function() {
+            $("#show").dblclick(function(){
+                $(this).html("Double Click For Clean Content");
+            });
+
+            $("#btnSubmitForm").click(function() {
+                var form = new Form($("form"), true);
+                setJSON(form.getData());
+            });
+
+            $("#btnSubmitDiv").click(function() {
+                var form = new Form($("#form_container"), true);
+                setJSON(form.getData());
+            });
+            
+            function setJSON(data) {
+                var dataStr = JSON.stringify(data);
+                dataStr = dataStr.replace(/","/g, "\",<br/>\"");
+                dataStr = dataStr.replace(/\{"/g,"{<br/>\"");
+                dataStr = dataStr.replace(/"\}/g,"\"<br/>}");
+                dataStr = dataStr.replace(/"]\}/g,"\"]<br/>}");
+                dataStr = dataStr.replace(/"],"/g,"\"],<br/>\"");
+                $("#show").html(dataStr); 
+                
+            }
+        });
+    </script>
+</body>
+</html>
