@@ -21,11 +21,13 @@
     // formContainerSelector = 'div#form-container';
     var form = new From(formContainerSelector);
     ```
+    
   * 获取表单数据
     ```javascript
     // 获取表单数据调用getData函数
     var formData = form.getData();
     ```
+    
     该函数不接受任何参数, 其返回值是Object对象. 对象中仅包含一级属性.<br>
     可使用`for-in`迭代出所有属性, 且属性名总是与表单项的`name属性值`对应.<br>
     * 如果表单项可接受多个值, 对应的表单值将使用`Array`对象保存 相关控件包括:`input[type='checkbox']`,`select[multiple='multiple']`<br>
@@ -61,6 +63,7 @@
         regexp-error="Error Message"
         >
       ```
+      
     * 执行验证<br>
       同过工具实体调用`validate()`函数执行表单验证, 该函数返回验证结果.
       ```javascript
