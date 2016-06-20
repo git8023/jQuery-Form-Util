@@ -129,7 +129,7 @@
     </table>
       
 # 依赖工具
-  jQuery 1.8+
-  StringUtil.js (本项目)
-  prototype.js (本项目)
+  jQuery 1.8+ <br>
+  StringUtil.js (本项目) <br>
+  prototype.js (本项目) <br>
   
