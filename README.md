@@ -2,7 +2,7 @@
   jQuery-Form 工具为简化表单操作而产生, 意在做到一步获取易管理的表单数据, 轻松配置表单验证和数据回填功能.
   
 # 将`jQuery-Form`导入到项目中
-  * [`下载`](https://github.com/git8023/jQuery-Form-Util.git)项目到本地
+  * [`下载`](https://github.com/git8023/jQuery-Form-Util/archive/master.zip)项目到本地
   * 解压后提取3个文件:`Form.js`, `StringUtil.js`, `prototype.js`
   * 文件引入顺序:
     * jQuery库: jQuery 1.8+
