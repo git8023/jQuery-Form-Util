@@ -1,5 +1,3 @@
-if (typeof jQuery === "undefined") { throw Error("jquery-form requires jQuery"); }
-
 /**
  * @Description 表单对象
  * @param formContainer
@@ -831,3 +829,10 @@ function Form(formContainer, debug) {
     log("Create form instance.");
     return this;
 }
+
+if (typeof jQuery === "undefined") { throw Error("jquery-form requires jQuery"); }
+(function($) {
+    $.fn.form = function(debug) {
+        return new Form($(this), debug);
+    };
+})($);
