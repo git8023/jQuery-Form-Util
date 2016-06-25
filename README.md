@@ -4,7 +4,7 @@
 # Version
   * v1.1  
     * `new` 表单回填`backfill`
-    * `new` 验证事件自动触发配置: `xx-event`, `xx-event`事件当前支持`keyup`和`blur`. `remote-event`不支持`keyup`, 防止频繁发送URL请求.
+    * `new` 验证事件自动触发配置: `[validator-name]-event`, `[validator-name]-event`事件当前支持`keyup`和`blur` (注意:为防止频繁发送URL请求`remote-event`仅支持`blur`).
     * `update` 日志功能, 获取对象时可指定是否打印日志
       ```javascript    
       
@@ -16,6 +16,7 @@
       ```
     * `new` 配置查看功能
       ```javascript
+      
       // 查看配置目录
       Form.dir;
       
@@ -69,6 +70,7 @@
   
 ## 获取表单对象
   ```javascript
+  
   var formContainerSelector = 'div#form-container form:eq(0)';
   // 表单容器选择器除了可以直接指向form控件之外, 也可以使用其父容器.
   // 但应确保容器中只存在一个表单对象
@@ -78,6 +80,7 @@
     
 ## 获取表单数据
   ```javascript
+  
   // 获取表单数据调用getData函数
   var formData = form.getData();
   ```
@@ -86,11 +89,13 @@
   可使用`for-in`迭代出所有属性, 且属性名总是与表单项的`name属性值`对应.<br>
   * 如果表单项可接受多个值, 对应的表单值将使用`Array`对象保存 相关控件包括:`input[type='checkbox']`,`select[multiple='multiple']`<br>
     ```javascript
+    
     var hobbies = formData['hobbies']; // (hobbies instanceof Array) ==  true
     ```
   
   * 如果表单项只接受唯一值, 对应的表单值将使用`String`类型保存
     ```javascript
+    
     var account = formData['account']; // (typeof account == 'string') == true
     ```
     
@@ -102,6 +107,7 @@
   * `HTML`中配置验证器<br>
     验证器配置项通过`Form.dir.KEYS.validate.ATTIBUTES`查询, 当前可配置项如下示例:
     ```html
+    
     <!-- 仅配置验证器 -->
     <input name="desc" 
       regexp="regexp" 
@@ -128,6 +134,7 @@
   * 执行验证<br>
     同过工具实体调用`validate()`函数执行表单验证, 该函数返回验证结果.
     ```javascript
+    
     var success = form.validate(conf);
     ```
     
