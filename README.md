@@ -1,6 +1,47 @@
 # jQuery-Form
   jQuery-Form 工具为简化表单操作而产生, 意在做到一步获取易管理的表单数据, 轻松配置表单验证和数据回填功能.
   
+# Version
+  * v1.1  
+    * 新增接口: 表单回填`backfill`
+    * 新增验证事件自动触发配置: `xx-event`, `xx-event`事件当前支持`keyup`和`blur`. `remote-event`不支持`keyup`, 防止频繁发送URL请求.
+    * 新增日志功能, 获取对象时可指定是否打印日志
+      ```javascript    
+      
+      // showLog      : true-开启日志功能, false-关闭日志功能
+      // 日志消息格式 : 
+      // [local] [caller] [date-time] - message
+      // [http://localhost:8080/formUtil/js/Form.js:831:5] [Form] [2016-06-25 19:21:44] - "Create form instance."
+      var form = new Form($formContainer, showLog);
+      ```
+    * 新增配置查看功能
+      ```javascript
+      // 查看配置目录
+      Form.dir;
+      
+      // 查看表单验证可配置关键字
+      // ATTRIBUTES   : 在HTML代码中可配置的属性
+      // EVENTS       : 可配置的验证事件, 详情查看 new Form().registerEvents(events)
+      Form.dir.KEYS.validate;
+      
+      // 查看表单回填可配置关键字
+      // ATTRIBUTES   : 在HTML代码中可配置的属性
+      // HANDLERS     : 可配置的数据处理器, 详情查看 new Form().registerEvents(events)
+      Form.dir.KEYS.backfill;
+      
+      // 查看Form提供的默认配置
+      // autoEvents   : 表单项自动注册事件配置
+      // dataHandlers : 表单数据处理器, 当前提供date处理器, 可在HTML中配置(查看Form.dir.KEYS.backfill)
+      // events       : 默认事件列表
+      // selectors    : Form支持的表单项列表
+      // validators   : 默认验证器列表
+      Form.dir.config;
+      ```
+  * v1.0  
+    提供基础功能:
+    * 获取表单数据
+    * 表单校验
+  
 # 将`jQuery-Form`导入到项目中
   * [`下载`](https://github.com/git8023/jQuery-Form-Util/archive/master.zip)项目到本地
   * 解压后提取3个文件:`Form.js`, `StringUtil.js`, `prototype.js`
@@ -13,6 +54,7 @@
 # 如何使用
   表单容器不强制性依赖`form`控件, 表单容器可以是任意控件元素.<br>
   但应确保表单容器中包含合法(name属性值)的表单项控件, 如: `input`,`select`,`textarea`.
+  
 ## 获取表单对象
   ```javascript
   var formContainerSelector = 'div#form-container form:eq(0)';
@@ -41,12 +83,12 @@
     ```
     
 ## 表单验证<br>
-  表单验证器通过`form.config.validators`查询, 当前默认支持的验证器:<br>
+  表单验证器通过`Form.dir.config.validators`查询, 当前默认支持的验证器:<br>
   正则表达式: `regexp`, `eq-to`, `not-eq-tob`<br>
   远程验证: `remote-url`<br>
 
   * `HTML`中配置验证器<br>
-    验证器配置项通过`this.KEYS.ATTIBUTES`查询, 当前可配置项如下示例:
+    验证器配置项通过`Form.dir.KEYS.validate.ATTIBUTES`查询, 当前可配置项如下示例:
     ```html
     <!-- 仅配置验证器 -->
     <input name="desc" 
@@ -54,6 +96,8 @@
       eq-to="otherFormControlSelector"
       not-eq-to="otherFormControlSelector"
       remote-url="verificationUrl"
+      <!-- v1.1 -->
+      remote-event="blur"
       >
       
     <!-- 也可在指定验证器同时定义错误消息 -->
