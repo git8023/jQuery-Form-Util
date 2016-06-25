@@ -96,8 +96,6 @@
       eq-to="otherFormControlSelector"
       not-eq-to="otherFormControlSelector"
       remote-url="verificationUrl"
-      <!-- v1.1 -->
-      remote-event="blur"
       >
       
     <!-- 也可在指定验证器同时定义错误消息 -->
@@ -105,6 +103,13 @@
     <input name="desc" 
       regexp="regexp" 
       regexp-error="Error Message"
+      >
+    
+    <!-- v1.1 -->  
+    <!-- 配置表单验证事件触发 -->
+    <input name="desc"
+      remote-url="verificationUrl"
+      remote-event="blur"
       >
     ```
       
