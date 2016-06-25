@@ -2,7 +2,7 @@
   jQuery-Form 工具为简化表单操作而产生, 意在做到一步获取易管理的表单数据, 轻松配置表单验证和数据回填功能.
   
 # Version
-  * v1.1  
+  * `new` v1.1  
     * `new` 表单回填`backfill`
     * `new` 验证事件自动触发配置: `[validator-name]-event`, `[validator-name]-event`事件当前支持`keyup`和`blur` (注意:为防止频繁发送URL请求`remote-event`仅支持`blur`).
     * `update` 日志功能, 获取对象时可指定是否打印日志
