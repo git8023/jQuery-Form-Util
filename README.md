@@ -5,7 +5,7 @@
   * v1.1  
     * `new` 表单回填`backfill`
     * `new` 验证事件自动触发配置: `xx-event`, `xx-event`事件当前支持`keyup`和`blur`. `remote-event`不支持`keyup`, 防止频繁发送URL请求.
-    * `new` 日志功能, 获取对象时可指定是否打印日志
+    * `update` 日志功能, 获取对象时可指定是否打印日志
       ```javascript    
       
       // showLog      : true-开启日志功能, false-关闭日志功能
@@ -37,6 +37,18 @@
       // validators   : 默认验证器列表
       Form.dir.config;
       ```
+    * `new` 将`Form`集成到`jQuery`库
+      ```javascript  
+      
+      // 获取表单容器
+      var formCtnr = $($formContainerSelector);
+      
+      // 构建表单对象
+      // 如果对Form工具使用较为熟悉, 推荐jQuery扩展构建方式
+      // 对于初次接触Form的使用者, 推荐Javascript原生构建方式: new Form(formContainer, showLog);
+      // 使用new关键字构建的对象在一些开发工具(如:eclipse)中可以提供接口提示功能
+      var form = formCtnr.form(showLog);
+      ```
   * v1.0  
     提供基础功能:
     * 获取表单数据
@@ -44,13 +56,12 @@
   
 # 将`jQuery-Form`导入到项目中
   * [`下载`](https://github.com/git8023/jQuery-Form-Util/archive/master.zip)项目到本地
-  * 解压后提取3个文件:`Form.js`, `StringUtil.js`, `prototype.js`
+  * 解压后提取`/release`文件夹中的所有文件
   * 文件引入顺序:
     * jQuery库         : jQuery 1.8+
-    * 原型扩展         : `prototype.js`
-    * 字符串工具       : `StringUtil.js`
-    * (v1.1)OGNL工具   : `OgnlUtil.js`
-    * 表单工具         : `Form.js`.
+    * 原型扩展         : [prototype.js](https://github.com/git8023/jQuery-Form-Util/blob/master/release/v1.1/OgnlUtil.js "原型扩展")
+    * 工具             : [StringUtil.js](https://github.com/git8023/jQuery-Form-Util/blob/master/release/v1.1/StringUtil.js "字符串工具"), [OgnlUtil.js](https://github.com/git8023/jQuery-Form-Util/blob/master/release/v1.1/OgnlUtil.js "OGNL工具,V1.1新增")
+    * 表单工具         : [Form.js](https://github.com/git8023/jQuery-Form-Util/blob/master/release/v1.1/Form.js "表单工具")
 
 # 如何使用
   表单容器不强制性依赖`form`控件, 表单容器可以是任意控件元素.<br>
