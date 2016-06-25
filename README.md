@@ -3,9 +3,9 @@
   
 # Version
   * v1.1  
-    * 新增接口: 表单回填`backfill`
-    * 新增验证事件自动触发配置: `xx-event`, `xx-event`事件当前支持`keyup`和`blur`. `remote-event`不支持`keyup`, 防止频繁发送URL请求.
-    * 新增日志功能, 获取对象时可指定是否打印日志
+    * `new` 表单回填`backfill`
+    * `new` 验证事件自动触发配置: `xx-event`, `xx-event`事件当前支持`keyup`和`blur`. `remote-event`不支持`keyup`, 防止频繁发送URL请求.
+    * `new` 日志功能, 获取对象时可指定是否打印日志
       ```javascript    
       
       // showLog      : true-开启日志功能, false-关闭日志功能
@@ -14,7 +14,7 @@
       // [http://localhost:8080/formUtil/js/Form.js:831:5] [Form] [2016-06-25 19:21:44] - "Create form instance."
       var form = new Form($formContainer, showLog);
       ```
-    * 新增配置查看功能
+    * `new` 配置查看功能
       ```javascript
       // 查看配置目录
       Form.dir;
