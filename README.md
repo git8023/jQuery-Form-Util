@@ -46,7 +46,7 @@
   远程验证: `remote-url`<br>
 
   * `HTML`中配置验证器<br>
-    验证器配置项通过`$thisObj.KEYS.ATTIBUTES`查询, 当前可配置项如下示例:
+    验证器配置项通过`this.KEYS.ATTIBUTES`查询, 当前可配置项如下示例:
     ```html
     <!-- 仅配置验证器 -->
     <input name="desc" 
