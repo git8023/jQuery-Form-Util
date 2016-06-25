@@ -46,10 +46,11 @@
   * [`下载`](https://github.com/git8023/jQuery-Form-Util/archive/master.zip)项目到本地
   * 解压后提取3个文件:`Form.js`, `StringUtil.js`, `prototype.js`
   * 文件引入顺序:
-    * jQuery库: jQuery 1.8+
-    * 原型扩展:`prototype.js`
-    * 字符串工具:`StringUtil.js`
-    * 表单工具:`Form.js`.
+    * jQuery库         : jQuery 1.8+
+    * 原型扩展         : `prototype.js`
+    * 字符串工具       : `StringUtil.js`
+    * (v1.1)OGNL工具   : `OgnlUtil.js`
+    * 表单工具         : `Form.js`.
 
 # 如何使用
   表单容器不强制性依赖`form`控件, 表单容器可以是任意控件元素.<br>
@@ -178,7 +179,8 @@
     </table>
       
 # 依赖工具
-  jQuery 1.8+ <br>
-  StringUtil.js (本项目) <br>
-  prototype.js (本项目) <br>
+  jQuery 1.8+  
+  StringUtil.js (本项目)  
+  prototype.js  (本项目)   
+  OgnlUtil.js   (本项目) 
   
