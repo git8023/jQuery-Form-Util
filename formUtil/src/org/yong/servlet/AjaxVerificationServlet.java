@@ -16,7 +16,7 @@ public class AjaxVerificationServlet extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String account = req.getParameter("account");
 		System.out.println("AjaxVerificationServlet.service()");
-		resp.getWriter().write("" + "admin".equals(account));
+		resp.getWriter().write("" + !"admin".equals(account));
 	}
 
 }

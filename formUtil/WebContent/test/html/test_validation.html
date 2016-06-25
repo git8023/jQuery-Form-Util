@@ -39,38 +39,53 @@ td {
 
         <form action="#" onsubmit="return false">
             <p>　用户名：
-                <input type="text" name="account" 
-                    regexp="/^[a-zA-Z][a-zA-Z0-9_-]{7,16}$/" 
-                    regexp-error="用户名支持字母、数字、下划线、中划线, 只能以字母开头. 且长度在8~16之间" 
+                <input type="text" 
+                    name="account"
+                    value="admin"
+                     
+                    regexp="/^[a-zA-Z][a-zA-Z0-9_-]{4,16}$/" 
+                    regexp-error="用户名支持字母、数字、下划线、中划线, 只能以字母开头. 且长度在5~16之间" 
                     
                     remote-url="user/existAccount"
                     remote-error="已存在的用户名, 请更换."
+                    remote-event="blur"
                     />
                 <span></span>
             </p>
             <p>　密　码：
                 <input type="password" name="pwd"
-                    invalid_sufix_regexp="/^.{8,20}$/" 
-                    invalid_sufix_regexp-error="密码长度在8~20之间"
+                    regexp="/^.{8,20}$/" 
+                    regexp-error="密码长度在8~20之间"
                     
-                    invalid_sufix_not-eq-to="[name='account']" 
-                    invalid_sufix_not-eq-to-error="密码不能与账户相同" 
+                    not-eq-to="[name='account']" 
+                    not-eq-to-error="密码不能与账户相同" 
                     />
                 <span></span>
             </p>
             <p>重复密码：
                 <input type="password" name="repwd" 
-                    invalid_sufix_eq-to="[name='pwd']" 
-                    invalid_sufix_eq-to-error="两次密码输入不一致" 
+                    eq-to="[name='pwd']" 
+                    eq-to-error="两次密码输入不一致" 
                     />
                 <span></span>
             </p>
             <p>　描　述：
                 <textarea name="desc" cols="30" rows="10"
-                    invalid_sufix_regexp="/^.+$/"
-                    invalid_sufix_regexp-error="描述不能为空"
+                    regexp="/^.+$/"
+                    regexp-error="描述不能为空"
                     ></textarea>
                 <span></span>
+            </p>
+            <p>
+                <label for="validAll">
+                    <input type="checkbox" id="validAll" />Always Validate All
+                </label>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                <label for="refreshAutoEvent">
+                    <input type="checkbox" id="refreshAutoEvent"/>Refresh Auto Event
+                </label>
             </p>
             <p><button id="btnSubmit">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;<button id="btnRegisterEvents">Register Events</button></p>
         </form>
@@ -81,6 +96,7 @@ td {
             var form = new Form($("#form_container"), true);
             $("#btnRegisterEvents").click(function(){
                 form.registerEvents({
+                    refreshAutoEvent : $("#refreshAutoEvent").is(":checked"),
                     validSuccess: function(item, val) {
                         item.removeClass("ipt_err");
                         item.parent().find("span").html("");
@@ -88,6 +104,10 @@ td {
                     validFailed: function(item, value, errMsg) {
                         item.addClass("ipt_err");
                         item.parent().find("span").html(errMsg);
+                    },
+                    remoteHandler: function(item, rData){
+                        item.addClass("ipt_err");
+                        item.parent().find("span").html("消息来自于form.registerEvents注册的remoteHandler函数");
                     },
                     validCompleted: function(){
                         console.log("success:" + arguments);
@@ -99,7 +119,7 @@ td {
             $("#btnSubmit").click(function(){
                 var valid = form.validate({
                     // validAll : true
-                    validAll : false
+                    validAll : $("#validAll").is(":checked")
                 });
                 
                 valid && console && console.log("Verification : " + valid);
