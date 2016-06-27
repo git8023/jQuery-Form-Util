@@ -15,5 +15,6 @@
 <body>
     <a href="<%=basePath%>test/html/test-get-form-data.html">获取表单数据</a>
     <a href="<%=basePath%>test/html/test_validation.html">表单校验</a>
+    <a href="<%=basePath%>test/html/test_backfill.html">表单数据回填</a>
 </body>
 </html>

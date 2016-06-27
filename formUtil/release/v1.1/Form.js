@@ -1,3 +1,5 @@
+if (typeof jQuery === "undefined") { throw Error("jquery-form requires jQuery"); }
+
 /**
  * @Description 表单对象
  * @param formContainer
@@ -134,7 +136,7 @@ function Form(formContainer, debug) {
                 // 正则表达式验证
                 var val = item.val(), errMsg = item.attr(KEYS.validate.ATTRIBUTES.REGEXP_ERROR);
                 var valid = regexp.test(val);
-                config.events.validate._invoke(item, valid, errMsg);
+                $thisObj.config.events.validate._invoke(item, valid, errMsg);
 
                 return valid;
             },
@@ -149,7 +151,7 @@ function Form(formContainer, debug) {
                 var targetCtrl = $(eqToSelector), targetVal = targetCtrl.val();
                 var val = item.val(), errMsg = item.attr(KEYS.validate.ATTRIBUTES.EQULAS_TO_ERROR);
                 var valid = (val == targetVal);
-                config.events.validate._invoke(item, valid, errMsg);
+                $thisObj.config.events.validate._invoke(item, valid, errMsg);
 
                 return valid;
             },
@@ -165,7 +167,7 @@ function Form(formContainer, debug) {
                 var targetCtrl = $(notEqToSelector), targetVal = targetCtrl.val();
                 var val = item.val(), errMsg = item.attr(KEYS.validate.ATTRIBUTES.NOT_EQULAS_TO_ERROR);
                 var valid = (val != targetVal);
-                config.events.validate._invoke(item, valid, errMsg);
+                $thisObj.config.events.validate._invoke(item, valid, errMsg);
 
                 return valid;
             },
@@ -189,7 +191,8 @@ function Form(formContainer, debug) {
                     async: false,
                     success: function(rData) {
                         remotePendingCount--;
-                        log("Remote verified result: >>" + (typeof rData == "object" ? JSON.stringify(rData) : rData));
+                        log("Remote verified result: >>" + (typeof rData == "object" ? JSON.stringify(rData) : rData)
+                                        + ".");
 
                         // 尝试将返回结果处理为非字符串类型
                         try {
@@ -199,21 +202,21 @@ function Form(formContainer, debug) {
                         }
 
                         // 优先执行客户远程结果处理器
-                        if (config.events.validate.remoteHandler instanceof Function) {
-                            config.events.validate.remoteHandler(item, rData);
+                        if ($thisObj.config.events.validate.remoteHandler instanceof Function) {
+                            $thisObj.config.events.validate.remoteHandler(item, rData);
                             return;
                         }
 
                         // 执行默认处理器
                         var errMsg = item.attr(KEYS.validate.ATTRIBUTES.REMOTE_ERROR);
-                        config.events.validate._invoke(item, rData, errMsg);
+                        $thisObj.config.events.validate._invoke(item, rData, errMsg);
                     },
                     error: function(rData) {
                         remotePendingCount--;
                         // 按失败处理
                         log("error, remotePendingCount:" + remotePendingCount);
                         var errMsg = item.attr(KEYS.validate.ATTRIBUTES.REMOTE_ERROR);
-                        config.events.validate._invoke(item, false, errMsg);
+                        $thisObj.config.events.validate._invoke(item, false, errMsg);
                     }
                 });
             },
@@ -242,6 +245,7 @@ function Form(formContainer, debug) {
                 }
 
                 // :> remote
+                // TODO 如果配置了远程验证触发器, 当前不执行remote校验
                 if (result && !item.attr(KEYS.validate.ATTRIBUTES.REMOTE_TRIGGER_EVENT)) {
                     tmp = this.doRemote(item);
                     result = (undefined != tmp ? (tmp && result) : result);
@@ -318,8 +322,11 @@ function Form(formContainer, debug) {
             register: function() {
                 var items = $thisObj.getNamedFormControl();
                 items.each(function(item) {
-                    // remote不支持键盘事件, 防止频繁发送请求
-                    (!item.attr(KEYS.validate.ATTRIBUTES.REMOTE_URL)) && item.keyup(config.autoEvents.unifyHandler);
+                    // FIXME ?是否应该注销已注册的事件
+                    if (!item.attr(KEYS.validate.ATTRIBUTES.REMOTE_URL)) {
+                        // remote不支持键盘事件, 防止频繁发送请求
+                        item.keyup(config.autoEvents.unifyHandler);
+                    }
                     item.blur(config.autoEvents.unifyHandler);
                 });
             },
@@ -379,35 +386,36 @@ function Form(formContainer, debug) {
 
         // Array value
         log("Set repeat value.");
-        $thisObj.formItems.repeatableItems.each(function() {
-            var $this = $(this), val = $this.val();
-            var name = ($this.attr(KEYS.ATTRIBUTE.NAME) || FINAL_VALUE.EMPTY_STRING).trim();
-            log("Form contorl [name='" + name + "'][value='" + val + "'].");
+        $thisObj.formItems.repeatableItems
+                        .each(function() {
+                            var $this = $(this), val = $this.val(), name = ($this.attr(KEYS.ATTRIBUTE.NAME) || FINAL_VALUE.EMPTY_STRING)
+                                            .trim();
+                            log("Form contorl [name='" + name + "'][value='" + val + "'].");
 
-            if (!name) {
-                log("Skip invalid form control.");
-                return true;
-            }
+                            if (!name) {
+                                log("Skip invalid form control.");
+                                return true;
+                            }
 
-            if ("INPUT" == $this[0].tagName) {
-                if (FINAL_VALUE.INPUT_TYPE_CHECKBOX == $this.attr(KEYS.ATTRIBUTE.INPUT_TYPE)) {
-                    log("This is 'checkbox' input control.");
-                    var choseCheckbox = $this.is(FINAL_VALUE.CHECKED_SELECTOR);
-                    if (!choseCheckbox) {
-                        log("Skip unchecked item");
-                        return true;
-                    }
-                }
-            }
+                            if ("INPUT" == $this[0].tagName) {
+                                if (FINAL_VALUE.INPUT_TYPE_CHECKBOX == $this.attr(KEYS.ATTRIBUTE.INPUT_TYPE)) {
+                                    log("This is 'checkbox' input control.");
+                                    var choseCheckbox = $this.is(FINAL_VALUE.CHECKED_SELECTOR);
+                                    if (!choseCheckbox) {
+                                        log("Skip unchecked item");
+                                        return true;
+                                    }
+                                }
+                            }
 
-            var oldVal = data[name];
-            if (oldVal instanceof Array) {
-                data[name].push(val);
-            } else {
-                data[name] = [val];
-                oldVal && data[name].push(oldVal);
-            }
-        });
+                            var oldVal = data[name];
+                            if (oldVal instanceof Array) {
+                                data[name].push(val);
+                            } else {
+                                data[name] = [val];
+                                oldVal && data[name].push(oldVal);
+                            }
+                        });
         log("show data:" + JSON.stringify(data));
         return data;
     }
@@ -424,11 +432,11 @@ function Form(formContainer, debug) {
         if ($thisObj.formItems.isEmpty() || refreshCached) {
             log("Refresh chached from controls.");
 
-            var singleValSelectors = config.selectors.singleSelectors.toString();
+            var singleValSelectors = $thisObj.config.selectors.singleSelectors.toString();
             $thisObj.formItems.singleValItems = $thisObj.container.find(singleValSelectors);
             log("Single value controls size of : " + $thisObj.formItems.singleValItems.size() + ".");
 
-            var repeatableValSelectors = config.selectors.repeatableSelectors.toString();
+            var repeatableValSelectors = $thisObj.config.selectors.repeatableSelectors.toString();
             $thisObj.formItems.repeatableItems = $thisObj.container.find(repeatableValSelectors);
             log("Repeatable value controls size of : " + $thisObj.formItems.repeatableItems.size() + ".");
         }
@@ -504,13 +512,13 @@ function Form(formContainer, debug) {
         validResult = true;
         groupItems.each(function(item, idx) {
             log("Current form control name: " + item.attr(KEYS.ATTRIBUTE.NAME) + ".");
-            validResult = (config.validators.invoke(item) && validResult);
+            validResult = ($thisObj.config.validators.invoke(item) && validResult);
             if (!(conf["validAll"] || validResult)) return false;
         });
 
         // 调用 validCompleted
         log("Callback validCompleted.");
-        var validCompleted = config.events.validate.validCompleted;
+        var validCompleted = $thisObj.config.events.validate.validCompleted;
         if (validCompleted instanceof Function) {
             validCompleted.call($thisObj, validResult);
         }
@@ -706,14 +714,14 @@ function Form(formContainer, debug) {
 
             // 获取数据处理器 > 处理数据
             var dataHandlerName = item.attr(KEYS.backfill.ATTRIBUTES.DATA_HANDLER);
-            var dataHandler = config.dataHandlers[dataHandlerName];
+            var dataHandler = $thisObj.config.dataHandlers[dataHandlerName];
             isFn(dataHandler) && (val = dataHandler(item, val));
 
             // 如果找到命名的回填前置处理器 > 调用前置处理器
             // 如果没找到命名的回填前置处理器, 执行统一前置处理器
             // 校验前置处理器是否阻止当前表单回填
-            var handler = config.events.backfill[KEYS.backfill.HANDLERS.NAMED_HANDLERS][name];
-            handler = (isFn(handler) ? handler : config.events.backfill.beforeHandler);
+            var handler = $thisObj.config.events.backfill[KEYS.backfill.HANDLERS.NAMED_HANDLERS][name];
+            handler = (isFn(handler) ? handler : $thisObj.config.events.backfill.beforeHandler);
             if (isFn(handler) && (false == (handler(item, val)))) { return true; }
 
             // 调用函数为表单项设值
@@ -728,14 +736,22 @@ function Form(formContainer, debug) {
         switch (tagName) {
         case "SELECT":
             // 这里可以控制如果找不到对应的数据项时, 可以添加当前值对应的 OPTION
-            // 关于 multiple 的问题, 已被 $.val() 处理过
         case "TEXTAREA":
             item.val(value);
             break;
         case "INPUT":
             var iptType = item.attr(KEYS.ATTRIBUTE.INPUT_TYPE).toUpperCase();
-            if (FINAL_VALUE.INPUT_TYPE_RADIO == iptType || FINAL_VALUE.INPUT_TYPE_CHECKBOX == iptType) {
-                setChose(item, value);
+            if (FINAL_VALUE.INPUT_TYPE_RADIO == iptType) {
+                item.val() == value && item.click();
+            } else if (FINAL_VALUE.INPUT_TYPE_CHECKBOX == iptType) {
+                value = (value || FINAL_VALUE.EMPTY_STRING).toString();
+                var checkboxVal = item.val();
+                value.split(",").each(function(v) {
+                    if (v.trim() == checkboxVal) {
+                        !item.is(":checked") && item.click();
+                        return false;
+                    }
+                });
             } else {
                 item.val(value);
             }
@@ -744,16 +760,6 @@ function Form(formContainer, debug) {
             log("Can't support form-control:" + tagName + ".");
             break;
         }
-    }
-
-    // 设置复选(单选)框选中
-    function setChose(item, value) {
-        var checked = false, lawfulVal = (undefined != value && null != value);
-        if (lawfulVal) {
-            (!(value instanceof Array)) && (value = [value]);
-            checked = (-1 != value.indexOf(item.val()) && !item.is(":checked"));
-        }
-        item.prop("checked", checked);
     }
 
     // 日志记录
@@ -825,10 +831,3 @@ function Form(formContainer, debug) {
     log("Create form instance.");
     return this;
 }
-
-if (typeof jQuery === "undefined") { throw Error("jquery-form requires jQuery"); }
-(function($) {
-    $.fn.form = function(debug) {
-        return new Form($(this), debug);
-    };
-})($);

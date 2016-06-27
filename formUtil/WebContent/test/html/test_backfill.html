@@ -2,10 +2,11 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Get Form Data Test</title>
+    <title>Backfill Test</title>
     
     <script type="text/javascript" src="../../js/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="../../js/prototype.js"></script>
+    <script type="text/javascript" src="../../js/OgnlUtil.js"></script>
     <script type="text/javascript" src="../../js/Form.js"></script>
     
     <style type="text/css">
@@ -94,42 +95,44 @@
                 </tr>
                 
                 <tr>
-                    <td><button id="btnSubmitForm">Get Data By Form</button></td>
-                    <td><button id="btnSubmitDiv">Get Data By Div</button></td>
+                    <td><button id="btnBackfill">Back-Fill Data</button></td>
                 </tr>
             </table>
         </form>
     </div>
     
-    <div id="show" title="Double Click For Clean Content">Double Click For Clean Content</div>
-    
     <script type="text/javascript">
         $(function() {
-            $("#show").dblclick(function(){
-                $(this).html("Double Click For Clean Content");
+            $("#btnBackfill").click(function() {
+                 var $form = new Form($("form:eq(0)"), true);
+                 $form.backfill({
+                     formData: {
+                         hidden:"hidden",
+                         text:"admin",
+                         password:"123456",
+                         radio:"Radio1",
+                         singleSelece:"4",
+                         multiSelect:["2","4"],
+                         textarea:"ddd",
+                         checkbox:["checkbox1","checkbox2"]
+                     },
+                     beforeHandler: function($item, value) {
+                         console.log("beforeHandler-------------");
+                         console.log($item);
+                         console.log($item);
+                         console.log("beforeHandler-------------");
+                     },
+                     namedHandlers: {
+                         text: function($item, value) {
+                             console.log("namedHandlers.text-------------");
+                             console.log($item);
+                             console.log($item);
+                             console.log("namedHandlers.text-------------");
+                         }
+                     }
+                 });
             });
-
-            $("#btnSubmitForm").click(function() {
-                var form = new Form($("form"), true);
-                setJSON(form.getData());
-            });
-
-            $("#btnSubmitDiv").click(function() {
-                var form = new Form($("#form_container"), true);
-                setJSON(form.getData());
-            });
-            
-            function setJSON(data) {
-                var dataStr = JSON.stringify(data);
-                dataStr = dataStr.replace(/","/g, "\",<br/>\"");
-                dataStr = dataStr.replace(/\{"/g,"{<br/>\"");
-                dataStr = dataStr.replace(/"\}/g,"\"<br/>}");
-                dataStr = dataStr.replace(/"]\}/g,"\"]<br/>}");
-                dataStr = dataStr.replace(/"],"/g,"\"],<br/>\"");
-                $("#show").html(dataStr); 
-                
-            }
         });
-    </script>
+        </script>
 </body>
 </html>
