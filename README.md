@@ -57,7 +57,7 @@
   
 # 将`jQuery-Form`导入到项目中
   * [`下载`](https://github.com/git8023/jQuery-Form-Util/archive/master.zip)项目到本地
-  * 解压后提取`/release`文件夹中的所有文件
+  * 解压后提取`/release/util`内的工具所有工具文件, 和`/release/vx.x`下的最新版本`Form.js`文件
   * 文件引入顺序:
     * jQuery库         : jQuery 1.8+
     * 原型扩展         : [prototype.js](https://github.com/git8023/jQuery-Form-Util/blob/master/release/v1.1/OgnlUtil.js "原型扩展")
