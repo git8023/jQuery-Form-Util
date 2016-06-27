@@ -694,7 +694,7 @@ function Form(formContainer, debug) {
         conf = (conf || {});
         var formData = (conf[KEYS.backfill.PARAMETERS.FORM_DATA]);
         if (!(formData instanceof Object)) {
-            log("Invalid form-data:" + fromData + ".");
+            log("Invalid form-data:" + formData + ".");
             return;
         }
 
@@ -748,7 +748,7 @@ function Form(formContainer, debug) {
                 var checkboxVal = item.val();
                 value.split(",").each(function(v) {
                     if (v.trim() == checkboxVal) {
-                        item.click();
+                        !item.is(":checked") && item.click();
                         return false;
                     }
                 });
