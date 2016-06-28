@@ -449,7 +449,7 @@ function Form(formContainer, debug) {
      *            以下验证结果处理器会覆盖({@link new Form().registerEvents()})已经注册的验证结果处理器<br>
      *            <b>validSuccess</b> - {Function} 验证通过回调函数. 参数:{item, value}<br>
      *            <b>validFailed</b> - {Function} 验证失败回调函数. 参数:{item, value,
-     *            errMsg(表单项的regex属性值)}<br>
+     *            errMsg(xx-error属性值)}<br>
      *            <b>remoteHandler</b> - {Function} 远程验证回调函数, 参数: {item,
      *            resultData} <br>
      *            <b>validCompleted</b> - {Function} 验证完成后回调函数.
@@ -565,12 +565,12 @@ function Form(formContainer, debug) {
      * 验证事件:
      * validSuccess     : {Function}    验证成功回调函数, 参数: {item, value}
      * validFailed      : {Function}    验证失败回调函数, 参数: {item, value, errMsg}
-     * remoteHandler    : {Function}    远程数据回调函数, 参数: {item, value, errMsg}
+     * remoteHandler    : {Function}    远程验证回调函数, 参数: {item, value, errMsg}
      * validCompleted   : {Function}    验证完成回调函数
      * 
      * 表单回填事件:
-     * beforeHandler    : {Function}    表单项回填前置处理函数; 参数: {item, value}; 返回值:{Boolean} 阻止当前回填
-     * namesHandler     : {Object}      Key-{String}, Value-{Function}  参数: {item, value}; 返回值:{Boolean} 阻止当前回填
+     * beforeHandler    : {Function}    表单项回填前置处理函数; 参数: {item, value}; 返回值:{Boolean} false-阻止后续回填
+     * namedHandler     : {Object}      按表单项[name]属性值定义的前置处理函数. Key-{String}, Value-{Function}  参数: {item, value}; 返回值:{Boolean} 阻止当前回填
      * </pre>
      */
     this.registerEvents = function(events) {
@@ -682,6 +682,7 @@ function Form(formContainer, debug) {
      *            </table>
      */
     this.backfill = function(conf) {
+        this.backfill(conf)
         log("Backfill form data:[" + JSON.stringify(conf) + "]");
         conf = (conf || {});
         var formData = (conf[KEYS.backfill.PARAMETERS.FORM_DATA]);
