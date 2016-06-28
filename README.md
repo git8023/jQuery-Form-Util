@@ -1,6 +1,17 @@
 # jQuery-Form
   jQuery-Form 工具为简化表单操作而产生, 意在做到一步获取易管理的表单数据, 轻松配置表单验证和数据回填功能.
   
+# Main API
+  接口                                         | 参数                       | 返回值
+  -------------------------------------------- | -------------------------- | -------------------------
+  Form(formContainer, debug) | `formContainer`类型:jQuery, 表单控件或表单容器<br>`debug`类型:Boolean, true-打印调试日志 | 返回[Form实例对象]( "通过new关键字获取实例对象")或[Form函数执行环境]( "直接调用Form()函数")
+  getData(refreshCached) | `refreshCached`类型:Boolean, true-使用缓存的表单项(表单项有变动时使用当前值), false-刷新表单项缓存 | 与`name`属性值一一对应的表单数据对象
+  getFormItems(refreshCached) | `refreshCached`类型:Boolean, true-使用缓存的表单项(表单项有变动时使用当前值), false-刷新表单项缓存 | 表单项控件列表对象[formItem]( "也可使用$form.formItem直接访问"). 其中`formItem.singleValItems`保存只接受一个值的表单控件(也包含select[multiple]); `formItem.repeatableItems`保存接受多个值的表单项控件
+  validate(validationConf) | `refreshCached`:Boolean, (Default:false) 刷新表单项缓存<br>`validAll`:Boolean, (Default:false) true-总是验证所有表单项, false-遇到验证失败时停止验证.<b>远程验证与此配置无关</b><br>以下验证结果处理器会覆盖`Form.registerEvents()`已经注册的验证结果处理器<br>`validSuccess`:Function, 验证通过回调函数. 参数:{$formItemControl, itemValue}<br>`validFailed`:Function, 验证失败回调函数. 参数:{item, value, errMsg(xx-error属性值)}<br>`remoteHandler`:Function, 远程验证回调函数. 参数:{item, resultData}<br>`validCompleted`:Function, 验证完成后回调函数. 参数:{validResult} | 验证结果(Boolean), true-验证通过, false-验证失败
+  getNamedFormControl() | -/- | 表单项控件数组, 按`HTML`中定义的顺序
+  registerEvents(events) | `refreshAutoEvent`:Boolean, true-刷新自动注册的事件 <br><br><b>验证事件列表:</b><br>[validSuccess]( "验证成功回调函数"), [validFailed]( "验证失败回调函数"), [remoteHandler]( "远程验证回调函数"), [validCompleted]( "验证完成回调函数")<br><br><b>表单回填事件:</b><br>`beforeHandle`:表单项回填前置处理函数, 参数:{$formItemControl, targetValue}, 返回值:false-阻止后续回填<br>`namesHandler`类型:Object, 按表单项[name]属性值定义的前置处理函数. Key(String)-表单项的`name`属性;Value(Function)-前置处理函数(与`beforeHandler`配置相同) | -/-
+  backfill(backfillConf) | `formData`类型:Object, 需要回填的表单数据, Key值与`name`属性对应.<br>[beforeHandler]( "参考registerEvents")覆盖已注册的处理器(`registerEvents`), [namedHandlers]( "参考registerEvents")覆盖已注册的处理器(`namedHandlers`) | -/-
+  
 # Version
   * `new` v1.1  
     * `new` 表单回填`backfill`
